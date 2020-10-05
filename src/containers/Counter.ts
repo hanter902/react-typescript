@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import Counter from '../pages/components/counter/counter';
+import Counter from '../components/counter/counter';
 
 
 const mapStateToProps = (state: any) => {
@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch: any) => {
         handleIncrementClick: () => dispatch({type: 'INCREMENT'}),
         handleDecrementClick: () => dispatch({type: 'DECREMENT'}),
         handleDataClick: () => dispatch({type: 'GET_NEWS'}),
-        handleTestParamClick: (value: number) => dispatch({type: 'TEST_PARAM', value: value})
+        handleTestParamClick: (value: number) => dispatch({type: 'TEST_PARAM', payload: value})
     }
 }
 
