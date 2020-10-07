@@ -1,0 +1,17 @@
+.logo {
+    padding: 15px 5px 0;
+}
+.ant-layout-sider-collapsed .logo img{
+    width: 70px!important;
+    padding-bottom: 10px;
+}
+
+/* .ant-btn{
+    margin-right: 10px!important;
+    margin-bottom: 5px!important;
+} */
+
+.ant-layout-footer {
+    padding: 6px 0 4px!important;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}

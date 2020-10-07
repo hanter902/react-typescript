@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
-import {ILoginState} from '../store/types/login';
-import {login} from '../store/actions/login';
-import Login from '../components/login/login';
+import {ILoginState} from '../store/login/ILogin';
+import {login} from '../store/login/actions';
+// import Login from '../components/login/login';
 import { Dispatch } from 'redux';
 
 
@@ -18,5 +18,5 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     }
 }
 
-const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(Login);
-export default LoginContainer;
+// const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(Login);
+export default 'LoginContainer';

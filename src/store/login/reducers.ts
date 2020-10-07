@@ -1,4 +1,5 @@
-import {ILoginState, LoginActionTypes, LOGIN, LOGIN_SUCCESS, LOGIN_ERROR} from './types';
+import {LoginActionTypes, LOGIN, LOGIN_SUCCESS, LOGIN_ERROR} from './types';
+import {ILoginState} from './ILogin';
 
 const initialState : ILoginState = {
     username: '',

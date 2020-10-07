@@ -1,4 +1,5 @@
-import { LOGIN, ILoginState, LOGIN_ERROR, LOGIN_SUCCESS } from "./types";
+import { LOGIN, LOGIN_ERROR, LOGIN_SUCCESS } from "./types";
+import {ILoginState} from './ILogin';
 
 export const login = (payload: ILoginState) => ({
   type: LOGIN,

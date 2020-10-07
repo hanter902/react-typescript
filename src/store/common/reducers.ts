@@ -1,4 +1,4 @@
-import { SHOW_LOADING, HIDE_LOADING, ICommonState, CommonActionTypes } from "../types/common";
+import { SHOW_LOADING, HIDE_LOADING, ICommonState, CommonActionTypes } from "./types";
 
 const initialState: ICommonState = {
   loading: false,

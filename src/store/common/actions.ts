@@ -1,4 +1,4 @@
-import * as types from '../types/common';
+import * as types from './types';
 
 export const showLoading = () => ({
     type: types.SHOW_LOADING

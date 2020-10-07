@@ -1,0 +1,7 @@
+.logo {
+    padding: 15px 5px 0;
+}
+.ant-layout-sider-collapsed .logo img{
+    width: 70px!important;
+    padding-bottom: 10px;
+}

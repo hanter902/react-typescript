@@ -1,6 +1,5 @@
 import {all, fork, put, takeLatest} from 'redux-saga/effects';
-import login from './sagas/login';
-import { LOGIN } from './types/login'
+
 // function* testParam(payload: any){
 //     console.log('testParam in saga');
 //     console.log(payload);
@@ -14,7 +13,8 @@ import { LOGIN } from './types/login'
 export default function* rootSaga(){
     console.log('rootSaga');
 
-    yield all([
-        fork(login)
-    ])
+    yield true;
+    // yield all([
+    //     fork(login)
+    // ])
 };
