@@ -1,10 +1,16 @@
-import { Button, Form, Input, InputNumber, Modal } from "antd";
+import { Form, Input, Modal, Radio } from "antd";
 
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
+import { ActiveStatus, InactiveStatus } from "../common/status";
+import { connect } from "react-redux";
+import { IVendor } from "../../store/vendor/types";
+import NotificationModal from "../common/notification-modal";
 
 type Props = {
   visible: boolean;
   setVisible: (visible: boolean) => void;
+  selectedVendor?: IVendor;
+  isNew: boolean;
 };
 
 const layout = {
@@ -15,25 +21,27 @@ const layout = {
     span: 16,
   },
 };
-const validateMessages = {
-  required: "${label} is required!",
-  types: {
-    email: "${label} is not validate email!",
-    number: "${label} is not a validate number!",
-  },
-  number: {
-    range: "${label} must be between ${min} and ${max}",
-  },
-};
 
-const VendorModal: FC<Props> = ({ visible, setVisible }) => {
-  const onFinish = (values: any) => {
-    console.log(values);
-  };
+const VendorModal: FC<Props> = ({
+  visible,
+  setVisible,
+  selectedVendor,
+  isNew,
+}) => {
+  if (!selectedVendor) {
+    return (
+      <NotificationModal
+        visible={visible}
+        setVisible={setVisible}
+        status={"error"}
+        title="Please choose one row on table"
+      />
+    );
+  }
 
   return (
     <Modal
-      title="Vertically centered modal dialog"
+      title={isNew ? "New Vendor" : "Update Vendor"}
       centered
       visible={visible}
       onOk={() => setVisible(false)}
@@ -42,58 +50,38 @@ const VendorModal: FC<Props> = ({ visible, setVisible }) => {
       <Form
         {...layout}
         name="nest-messages"
-        onFinish={onFinish}
-        validateMessages={validateMessages}
+        initialValues={{
+          status: selectedVendor.status,
+          name: selectedVendor.name,
+        }}
       >
-        <Form.Item
-          name={["user", "name"]}
-          label="Name"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input />
+        <Form.Item name="id" label="ID">
+          <span className="ant-form-text">{selectedVendor.id}</span>
         </Form.Item>
-        <Form.Item
-          name={["user", "email"]}
-          label="Email"
-          rules={[
-            {
-              type: "email",
-            },
-          ]}
-        >
-          <Input />
+
+        <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+          <Input onChange={(e) => (selectedVendor.name = e.target.value)} />
         </Form.Item>
-        <Form.Item
-          name={["user", "age"]}
-          label="Age"
-          rules={[
-            {
-              type: "number",
-              min: 0,
-              max: 99,
-            },
-          ]}
-        >
-          <InputNumber />
+
+        <Form.Item name="status" label="Status">
+          <Radio.Group
+            onChange={(e) => (selectedVendor.status = e.target.value)}
+          >
+            <Radio value="ACTIVE">
+              <ActiveStatus />
+            </Radio>
+            <Radio value="INACTIVE">
+              <InactiveStatus />
+            </Radio>
+          </Radio.Group>
         </Form.Item>
-        <Form.Item name={["user", "website"]} label="Website">
-          <Input />
-        </Form.Item>
-        <Form.Item name={["user", "introduction"]} label="Introduction">
-          <Input.TextArea />
-        </Form.Item>
-        {/* <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item> */}
       </Form>
     </Modal>
   );
 };
 
-export default VendorModal;
+const mapStateToProps = (state: any) => ({
+  selectedVendor: state.vendors.selectedVendor,
+});
+
+export default connect(mapStateToProps, null)(VendorModal);

@@ -9,24 +9,50 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import VendorModal from "../vendor/vendor-modal";
+import { useLocation } from 'react-router-dom';
+import VendorManagerModal from "../vendor/vendor-manager-modal";
+import TopMenuModal from "./top-menu-modal";
 
 
 const TopMenuAction = () => {
   const [visible, setVisible] = useState(false);
+  const [isNew, setIsNew] = useState(false);
+  // const location = useLocation();
+
+  const onClickShowModal = (isNew: boolean) => {
+    setIsNew(isNew);
+    setVisible(true);
+  }
+
+
+  // const handleCurrentFeature = () => { 
+  //   const feature = location.pathname.split('/').length > 1 ? location.pathname.split('/')[1] : null;
+    
+  //   switch (feature) {
+  //     case 'vendor-list':   
+  //       return <VendorModal visible={visible} setVisible={setVisible} isNew={isNew} />
+  //     case 'vendor-manager':
+  //       return <VendorManagerModal visible={visible} setVisible={setVisible} />    
+  //     default:
+  //       break;
+  //   }
+  // }
+
 
   return (
     <Fragment>
-      <VendorModal visible={visible} setVisible={setVisible} />
+    {/* {visible && handleCurrentFeature()} */}
+    <TopMenuModal visible={visible} isNew={isNew} setVisible={setVisible}/>
 
       <Menu mode="horizontal">
         <Menu.Item
           key="new"
           icon={<PlusOutlined />}
-          onClick={() => setVisible(true)}
+          onClick={() => onClickShowModal(true)}
         >
           New
         </Menu.Item>
-        <Menu.Item key="update" icon={<EditOutlined />}>
+        <Menu.Item key="update" icon={<EditOutlined />} onClick={() => onClickShowModal(false)}>
           Update
         </Menu.Item>
         <Menu.Item key="delete" icon={<DeleteOutlined />}>
