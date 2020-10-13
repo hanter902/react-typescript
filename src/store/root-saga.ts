@@ -1,5 +1,5 @@
 import {all, fork, put, takeLatest} from 'redux-saga/effects';
-
+import vendorSaga from './vendor/sagas';
 // function* testParam(payload: any){
 //     console.log('testParam in saga');
 //     console.log(payload);
@@ -13,8 +13,11 @@ import {all, fork, put, takeLatest} from 'redux-saga/effects';
 export default function* rootSaga(){
     console.log('rootSaga');
 
-    yield true;
+    // yield true;
     // yield all([
     //     fork(login)
     // ])
+    yield all([
+        fork(vendorSaga)
+    ])
 };

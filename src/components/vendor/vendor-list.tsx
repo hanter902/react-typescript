@@ -14,7 +14,7 @@ import Loading from "../common/loading";
 const columns = [
   {
     title: "ID",
-    dataIndex: "id",
+    dataIndex: "ID",
     render: (text: any) => <span>{text}</span>,
   },
   {
@@ -22,6 +22,16 @@ const columns = [
     dataIndex: "name",
     sorter: {
       compare: (a: any, b: any) => a.name.localeCompare(b.name),
+      multiple: 2,
+    },
+    render: (text: any) => <span>{text}</span>,
+    // responsive: ['lg'] as Breakpoint[],
+  },
+  {
+    title: "Address",
+    dataIndex: "address",
+    sorter: {
+      compare: (a: any, b: any) => a.address.localeCompare(b.address),
       multiple: 2,
     },
     render: (text: any) => <span>{text}</span>,
@@ -60,23 +70,33 @@ const columns = [
 type Props = {
   getList: () => void;
   selectedVendor: (vendor: IVendor) => void;
-  data: IVendor[];
+  selectedItemVendor: IVendor;
+  vendors: IVendor[];
 };
 
-const VendorList: FC<Props> = ({ getList, selectedVendor, data }) => {
+const VendorList: FC<Props> = ({ getList, selectedVendor, selectedItemVendor, vendors }) => {
+  const [selectedVendorTable, setSelectedVendorTable] = useState([]) ;
+
   useEffect(() => {
-    getList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    getList();    
+  }, [getList]);
+
+  useEffect(()=> {
+    console.log('useEffect selectedItemVendor')
+    if(!selectedItemVendor){
+      setSelectedVendorTable([]);
+    }
+  }, [selectedItemVendor]);
 
   const onChangeRadio = (selectedRowKeys: any) => {
-    const selectedItem = data.find(
-      (item) => item.id === selectedRowKeys[0]
+   setSelectedVendorTable(selectedRowKeys);
+    const selectedItem = vendors.find(
+      (item) => item.ID === selectedRowKeys[0]
     ) as IVendor;
     selectedVendor(selectedItem);
   };
 
-  if(!data){
+  if(vendors.length === 0){
     return <Loading />
   }
 
@@ -84,17 +104,19 @@ const VendorList: FC<Props> = ({ getList, selectedVendor, data }) => {
     <Fragment>
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={vendors}
         pagination={false}
-        rowSelection={{ type: "radio", onChange: onChangeRadio }}
-        rowKey="id"
+        rowSelection={{ type: "radio", selectedRowKeys: selectedVendorTable, onChange: onChangeRadio }}
+        rowKey="ID"
       />
     </Fragment>
   );
 };
 
 const mapStateToProps = (state: any) => ({
-  data: state.vendors.data,
+  vendors: state.vendors.vendors,
+  selectedItemVendor: state.vendors.selectedVendor,
+  // loading: state.common.loading
 });
 
 const mapDispatchToProps = {

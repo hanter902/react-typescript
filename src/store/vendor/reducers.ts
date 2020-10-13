@@ -1,38 +1,25 @@
 import * as types from './types';
 
+const vendors: types.IVendor[] = [];
 
 const initialState = {
-    data: [
-        {
-            "id": "AmbientModel",
-            "name": "AmbientModel",
-            "status": "ACTIVE",
-            "createdAt": "Wed Jun 17 2020 02:56:52 GMT+0000 (UTC)"
-        },
-        {
-            "id": "test.01",
-            "name": "test.InfinityWar",
-            "status": "INACTIVE",
-            "createdAt": "Mon Sep 07 2020 08:46:16 GMT+0000 (UTC)",
-        },
-        {
-            "id": "Welstory",
-            "name": "Welstory",
-            "status": "ACTIVE",
-            "createdAt": "Wed Oct 03 2018 02:11:35 GMT+0000 (UTC)",
-        }
-    ],
-    selectedVendor: null
+    vendors,
+    selectedVendor: null,
+    error: null
 }
 
 const reducer = (state = initialState, action: types.VendorActionTypes) => {
     switch(action.type){
         case types.GET_LIST_VENDOR:
             return {...state}
+        case types.GET_LIST_VENDOR_SUCCESS:
+            return {...state, vendors: action.payload }
+        case types.GET_LIST_VENDOR_ERROR:
+            return {...state, error: action.payload }
         case types.NEW_VENDOR:
-            return {...state}
+            return {...state, vendors: [...state.vendors, action.payload]}
         case types.UPDATE_VENDOR:
-            return {...state}
+            return {...state, vendors: state.vendors.map(vendor => vendor.ID === action.payload.ID? action.payload : vendor), selectedVendor: null}
         case types.DELETE_VENDOR:
             return {...state}
         case types.SELECTED_VENDOR:

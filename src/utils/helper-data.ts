@@ -13,8 +13,8 @@ const query = (query ='', variables = {}, method:Method = 'POST') => {
     };
 
     return Axios(configAxios)
-    .then(response => response.data)
-    .catch(error => console.log(error));
+    .then(response => response)
+    .catch(error => error);
 }
 
 export default query;

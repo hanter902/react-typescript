@@ -1,13 +1,18 @@
 import { Alert, Spin } from 'antd';
-import React from 'react';
+import React, { FC } from 'react';
 
-const Loading = () => {
+type Props = {
+  error?: any | null;
+}
+
+const Loading : FC<Props> = ({error}) => {
+  // const message = error? error : "Please waiting for a moment";
     return (
     <Spin tip="Loading...">
         <Alert
-          message="Alert message title"
-          description="Further details about the context of this alert."
-          type="info"
+          message="Information"
+          description={error? error : "Please waiting for a moment"}
+          type={error? "error" :"info"}
         />
       </Spin>
     )

@@ -1,16 +1,20 @@
-import { Form, Input, Modal, Radio } from "antd";
+import { Button, Form, Input, Modal, Radio } from "antd";
 
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { ActiveStatus, InactiveStatus } from "../common/status";
 import { connect } from "react-redux";
 import { IVendor } from "../../store/vendor/types";
 import NotificationModal from "../common/notification-modal";
+import { newVendor, updateVendor } from "../../store/vendor/actions";
+
 
 type Props = {
   visible: boolean;
   setVisible: (visible: boolean) => void;
   selectedVendor?: IVendor;
   isNew: boolean;
+  updateVendor: (vendor: IVendor) => void;
+  newVendor: (vendor: IVendor) => void;
 };
 
 const layout = {
@@ -27,16 +31,33 @@ const VendorModal: FC<Props> = ({
   setVisible,
   selectedVendor,
   isNew,
+  updateVendor,
+  newVendor
 }) => {
-  if (!selectedVendor) {
+  const [success, setSuccess] = useState(false);
+  if ((!selectedVendor && !isNew) || (!selectedVendor && success)) {
     return (
       <NotificationModal
         visible={visible}
         setVisible={setVisible}
-        status={"error"}
-        title="Please choose one row on table"
+        status={success? "success" : "error"}
+        title={success? isNew? "You added new vendor" : "You updated this vendor" : "Please choose one row on table"}
       />
     );
+  }
+
+  let {ID, name, status, address, createdAt, updatedAt} = selectedVendor as IVendor || {};
+
+  const onClickOk = () => {
+    const vendor: IVendor = {ID, name, status, address, createdAt, updatedAt}
+
+    if(isNew){
+      newVendor(vendor);
+    }
+    else{
+      updateVendor(vendor);
+    }
+    setSuccess(true);
   }
 
   return (
@@ -44,28 +65,31 @@ const VendorModal: FC<Props> = ({
       title={isNew ? "New Vendor" : "Update Vendor"}
       centered
       visible={visible}
-      onOk={() => setVisible(false)}
+      onOk={() => onClickOk()}
       onCancel={() => setVisible(false)}
     >
       <Form
         {...layout}
-        name="nest-messages"
         initialValues={{
-          status: selectedVendor.status,
-          name: selectedVendor.name,
+          status: status || 'ACTIVE',
+          name: name,
         }}
       >
         <Form.Item name="id" label="ID">
-          <span className="ant-form-text">{selectedVendor.id}</span>
+          {isNew? <Input onChange={(e) => (ID = e.target.value)} />: <span className="ant-form-text">{ID}</span>}
         </Form.Item>
 
         <Form.Item name="name" label="Name" rules={[{ required: true }]}>
-          <Input onChange={(e) => (selectedVendor.name = e.target.value)} />
+          <Input onChange={(e) => (name = e.target.value)} />
+        </Form.Item>
+
+        <Form.Item name="address" label="Address" rules={[{ required: true }]}>
+          <Input onChange={(e) => (address = e.target.value)} />
         </Form.Item>
 
         <Form.Item name="status" label="Status">
           <Radio.Group
-            onChange={(e) => (selectedVendor.status = e.target.value)}
+            onChange={(e) => (status = e.target.value)}
           >
             <Radio value="ACTIVE">
               <ActiveStatus />
@@ -84,4 +108,9 @@ const mapStateToProps = (state: any) => ({
   selectedVendor: state.vendors.selectedVendor,
 });
 
-export default connect(mapStateToProps, null)(VendorModal);
+const mapDispatchToProps = {
+  updateVendor: updateVendor,
+  newVendor: newVendor
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(VendorModal);

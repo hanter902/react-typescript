@@ -1,4 +1,4 @@
-import { Result } from "antd";
+import { Button, Result } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import { ResultStatusType } from "antd/lib/result";
 import React, { FC } from "react";
@@ -17,6 +17,11 @@ const NotificationModal: FC<Props> = ({ visible, setVisible, status, title }) =>
     visible={visible}
     onOk={() => setVisible(false)}
     onCancel={() => setVisible(false)}
+    footer={[
+      <Button type="primary" key="back" onClick={() => setVisible(false)}>
+        Back
+      </Button>
+    ]}
   >
     <Result
       status={status}

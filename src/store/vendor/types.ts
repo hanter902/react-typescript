@@ -19,7 +19,7 @@ export const SELECTED_VENDOR = 'SELECTED_VENDOR';
 
 
 export interface IVendor {
-    id: string,
+    ID: string,
     name: string,
     address: string,
     status: string,
@@ -27,7 +27,9 @@ export interface IVendor {
     updatedAt?: string
 }
 
-export type VendorActionTypes = { type: typeof GET_LIST_VENDOR } 
+export type VendorActionTypes = { type: typeof GET_LIST_VENDOR }
+                              | { type: typeof GET_LIST_VENDOR_SUCCESS, payload: IVendor[] } 
+                              | { type: typeof GET_LIST_VENDOR_ERROR, payload: string } 
                               | { type: typeof NEW_VENDOR, payload: IVendor } 
                               | { type: typeof UPDATE_VENDOR, payload: IVendor } 
                               | { type: typeof DELETE_VENDOR, payload: string }
